@@ -1,1 +1,1 @@
-# API-Weather-Journal-App-
+# API-Weather-Journal-App
