@@ -33,3 +33,28 @@ app.use(function(req, res, next) {
 });
 
 // Setup Server
+
+function listening() {
+    console.log(`Server running at port :${port}`);
+}
+app.get("/all", GetData);
+
+function GetData(req, res) {
+    res.send(projectData);
+    console.log(projectData);
+}
+
+// app.post("/", function(req, res, next) {
+//     // Handle the post for this route
+
+// });
+app.post("/addUserComment", showAllInfo);
+
+function showAllInfo(req, res) {
+    projectData.city = req.body.City;
+    projectData.temp = req.body.temp;
+    projectData.feeling = req.body.feeling;
+
+    res.send(projectData);
+    console.log(projectData);
+}
