@@ -16,12 +16,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
-// Initialize the main project folder
+
 app.use(express.static("website"));
 app.use(cors());
 app.options("*", cors());
 
-// Setup Server
+// Initialize the main project folder
 app.use(express.static("website"));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -31,3 +31,5 @@ app.use(function(req, res, next) {
     );
     next();
 });
+
+// Setup Server
