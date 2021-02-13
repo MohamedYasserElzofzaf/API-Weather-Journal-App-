@@ -10,5 +10,14 @@ let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 const btn = document.querySelector("#generate");
 btn.addEventListener("click", () => {
     const zipCode = document.querySelector("#zip").value;
-    getDate(zipCode);
+    const userFeeling = document.querySelector("feelings").value;
+    getDate(zipCode).then(function(data) {
+        console.log(data);
+        postData("http://127.0.0.1:8000/addUserComment", {
+            City: data.name,
+            temp: data.temp,
+            feeling: userFeeling,
+        });
+        updateUI();
+    });
 });
