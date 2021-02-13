@@ -33,7 +33,40 @@ const GetWeather = async(zipCode) => {
         console.log(newData);
         return newData;
     } catch (exception) {
-        console.log(`an error has been occured => ${exception}`);
+        console.log(`an error has been occurred => ${exception}`);
         alert("Please enter right zip code !!");
     }
+    const postData = async(url = "", data = {}) => {
+        const response = await fetch(url, {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+
+        try {
+            const newData = await JSON.parse(JSON.stringify(response));
+            console.log(newData);
+            return newData;
+        } catch (error) {
+            console.log("error", error);
+            // appropriately handle the error
+        }
+    };
+    const updateUI = async() => {
+        const request = await fetch("http://127.0.0.1:8000/all");
+        try {
+            const allData = await request.json();
+            console.log(allData);
+            document.getElementById("date").innerHTML = "Date : " + newDate;
+            document.getElementById("temp").innerHTML =
+                "Temperature : " + allData.temp + "°C";
+            document.getElementById("content").innerHTML =
+                "Your Feelings : " + allData.feeling;
+        } catch (error) {
+            console.log(`error : ${error}`);
+        }
+    };
 };
