@@ -1,5 +1,3 @@
-const { query } = require("express");
-
 /* Global Variables */
 const apiKey = "b6b2df7029c59742f6a82bb1b18c3456";
 
