@@ -21,7 +21,7 @@ const postData = async(url = "", data = {}) => {
         console.log(newData);
         return newData;
     } catch (error) {
-        console.log("error", error);
+        console.log("Error", error);
     }
 };
 const updateUI = async() => {
@@ -33,7 +33,7 @@ const updateUI = async() => {
         document.querySelector("#temp").innerHTML =
             "Temperature: " + allData.temp + "°";
         document.querySelector("#content").innerHTML =
-            "Your feelings: " + allData.feeling;
+            "Your feelings today: " + allData.feeling;
     } catch (error) {
         console.log(`Error : ${error}`);
     }
@@ -55,7 +55,6 @@ btn.addEventListener("click", () => {
 const GetWeather = async(zipCode) => {
     const BaseUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&units=metric&appid=${apiKey}`;
     const result = await fetch(BaseUrl);
-
     try {
         const data = await result.json();
         let newData = { name: data.name, temp: data.main.temp };
