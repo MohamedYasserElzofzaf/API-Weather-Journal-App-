@@ -25,23 +25,21 @@ const GetWeather = async(zipCode) => {
 
     try {
         const data = await result.json();
-        // let temperature = data.main.temp;
-        // let cityName = data.name;
         let newData = { name: data.name, temp: data.main.temp };
         console.log(newData);
         return newData;
     } catch (exception) {
-        console.log(`an error has been occurred => ${exception}`);
-        alert("Please enter right zip code !!");
+        console.log(`Error's been defined => ${exception}`);
+        alert("Make sure that you enter valid ZipCode !!!!!!!");
     }
     const postData = async(url = "", data = {}) => {
         const response = await fetch(url, {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
-            credentials: "same-origin", // include, *same-origin, omit
+            method: "POST",
+            credentials: "same-origin",
             headers: {
-                "Content-Type": "application/json",
+                "content-type": "application/json",
             },
-            body: JSON.stringify(data), // body data type must match "Content-Type" header
+            body: JSON.stringify(data),
         });
 
         try {
@@ -50,21 +48,20 @@ const GetWeather = async(zipCode) => {
             return newData;
         } catch (error) {
             console.log("error", error);
-            // appropriately handle the error
         }
     };
     const updateUI = async() => {
-        const request = await fetch("http://127.0.0.1:8000/all");
+        const request = await fetch("http://127.0.0.1:3000/all");
         try {
             const allData = await request.json();
             console.log(allData);
-            document.getElementById("date").innerHTML = "Date : " + newDate;
+            document.getElementById("date").innerHTML = "Date: " + newDate;
             document.getElementById("temp").innerHTML =
-                "Temperature : " + allData.temp + "°C";
+                "Temperature: " + allData.temp + "°";
             document.getElementById("content").innerHTML =
-                "Your Feelings : " + allData.feeling;
+                "Your feelings: " + allData.feeling;
         } catch (error) {
-            console.log(`error : ${error}`);
+            console.log(`Error : ${error}`);
         }
     };
 };

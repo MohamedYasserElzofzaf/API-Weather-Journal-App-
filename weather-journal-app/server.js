@@ -16,14 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
-
 app.use(express.static("website"));
 app.use(cors());
 app.options("*", cors());
-
-// Initialize the main project folder
-app.use(express.static("website"));
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
@@ -32,29 +28,18 @@ app.use(function(req, res, next) {
     next();
 });
 
-// Setup Server
-
 function listening() {
-    console.log(`Server running at port :${port}`);
+    console.log(`The port that the server running on is port :${port}`);
 }
-app.get("/all", GetData);
-
-function GetData(req, res) {
+app.get("/all", (req, res) => {
     res.send(projectData);
     console.log(projectData);
-}
+});
 
-// app.post("/", function(req, res, next) {
-//     // Handle the post for this route
-
-// });
-app.post("/addUserComment", showAllInfo);
-
-function showAllInfo(req, res) {
+app.post("/addUserComment", (req, res) => {
     projectData.city = req.body.City;
-    projectData.temp = req.body.temp;
     projectData.feeling = req.body.feeling;
-
+    projectData.temp = req.body.temp;
     res.send(projectData);
     console.log(projectData);
-}
+});
