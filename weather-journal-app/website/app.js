@@ -39,29 +39,39 @@ const updateUI = async() => {
     }
 };
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", async() => {
     const zipCode = document.querySelector("#zip").value;
     const userFeeling = document.querySelector("#feelings").value;
-    GetWeather(zipCode).then((data) => {
-        console.log(data);
-        postData("http://127.0.0.1:3000/addUserComment", {
-            City: data.name,
-            feeling: userFeeling,
-            temp: data.temp,
-        });
-        updateUI();
-    });
+    if (!zipCode) {
+        return alert("Enter the zip code please!!!!!");
+    }
+    if (!userFeeling) {
+        return alert("please tell us what you feel !!!");
+    }
+    GetWeather(zipCode, userFeeling);
+    // GetWeather(zipCode).then((data) => {
+    //     console.log(data);
+    //     postData("http://127.0.0.1:3000/addUserComment", {
+    //         City: data.name,
+    //         feeling: userFeeling,
+    //         temp: data.temp,
+    //     });
+    //     updateUI();
+    // });
 });
-const GetWeather = async(zipCode) => {
-    const BaseUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&units=metric&appid=${apiKey}`;
-    const result = await fetch(BaseUrl);
+async function GetWeather(zipCode, userFeeling) {
     try {
-        const data = await result.json();
-        let newData = { name: data.name, temp: data.main.temp };
-        console.log(newData);
-        return newData;
+        const response = await fetch(
+            `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=metric`
+        );
+        if (response.status === 404 || response.status === 400) {
+            return alert("Make sure that you enter valid ZipCode !!!!!!!");
+        }
+        const data = await response.json();
+        const temp = data.main.temp;
+        // console.log(temp);
+        return temp;
     } catch (exception) {
         console.log(`Error's been defined => ${exception}`);
-        alert("Make sure that you enter valid ZipCode !!!!!!!");
     }
-};
+}
