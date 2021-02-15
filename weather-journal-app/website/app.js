@@ -36,7 +36,7 @@ const updateUI = async() => {
         console.log(`Error : ${error}`);
     }
 };
-async function GetWeather(zipCode, userFeeling) {
+async function Getwether(zipCode, userFeeling) {
     try {
         const response = await fetch(
             `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=metric`
@@ -46,10 +46,9 @@ async function GetWeather(zipCode, userFeeling) {
         }
         const data = await response.json();
         const temp = data.main.temp;
-        // console.log(temp);
         return temp;
     } catch (exception) {
-        console.log(`Error's been defined => ${exception}`);
+        console.log(`Error : ${exception}`);
     }
 }
 btn.addEventListener("click", async() => {
@@ -61,8 +60,12 @@ btn.addEventListener("click", async() => {
     if (!userFeeling) {
         return alert("please tell us what you feel !!!");
     }
-    GetWeather(zipCode, userFeeling).then((data) => {
-        postData("/postData", { date: newDate, temp: temp, feeling: userFeeling });
+    Getwether(zipCode, userFeeling).then((data) => {
+        postData("/postData", {
+            date: newDate,
+            temp: data.main.temp,
+            feeling: userFeeling,
+        });
         updateUI();
     });
 });
