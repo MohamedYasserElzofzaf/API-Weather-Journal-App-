@@ -10,14 +10,12 @@ const postData = async(url = "", data = {}) => {
     const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
-        headers: {
-            "content-type": "application/json",
-        },
+        headers: JSON.stringify(data),
         body: JSON.stringify(data),
     });
 
     try {
-        const newData = await JSON.parse(JSON.stringify(response));
+        const newData = await response.json();
         console.log(newData);
         return newData;
     } catch (error) {
@@ -25,40 +23,19 @@ const postData = async(url = "", data = {}) => {
     }
 };
 const updateUI = async() => {
-    const request = await fetch("http://127.0.0.1:3000/all");
+    const request = await fetch("/postData");
     try {
         const allData = await request.json();
-        console.log(allData);
         document.querySelector("#date").innerHTML = "Date: " + newDate;
         document.querySelector("#temp").innerHTML =
             "Temperature: " + allData.temp + "°";
         document.querySelector("#content").innerHTML =
             "Your feelings today: " + allData.feeling;
+        return allData;
     } catch (error) {
         console.log(`Error : ${error}`);
     }
 };
-
-btn.addEventListener("click", async() => {
-    const zipCode = document.querySelector("#zip").value;
-    const userFeeling = document.querySelector("#feelings").value;
-    if (!zipCode) {
-        return alert("Enter the zip code please!!!!!");
-    }
-    if (!userFeeling) {
-        return alert("please tell us what you feel !!!");
-    }
-    GetWeather(zipCode, userFeeling);
-    // GetWeather(zipCode).then((data) => {
-    //     console.log(data);
-    //     postData("http://127.0.0.1:3000/addUserComment", {
-    //         City: data.name,
-    //         feeling: userFeeling,
-    //         temp: data.temp,
-    //     });
-    //     updateUI();
-    // });
-});
 async function GetWeather(zipCode, userFeeling) {
     try {
         const response = await fetch(
@@ -75,3 +52,17 @@ async function GetWeather(zipCode, userFeeling) {
         console.log(`Error's been defined => ${exception}`);
     }
 }
+btn.addEventListener("click", async() => {
+    const zipCode = document.querySelector("#zip").value;
+    const userFeeling = document.querySelector("#feelings").value;
+    if (!zipCode) {
+        return alert("Enter the zip code please!!!!!");
+    }
+    if (!userFeeling) {
+        return alert("please tell us what you feel !!!");
+    }
+    GetWeather(zipCode, userFeeling).then((data) => {
+        postData("/postData", { date: newDate, temp: temp, feeling: userFeeling });
+        updateUI();
+    });
+});
